@@ -14,20 +14,24 @@ let storageDataPDA;
 
 describe('storage', async () => {
 	it('Intialize', async () => {
-		const data = new anchor.BN(100);
-		[storageDataPDA] = await anchor.web3.PublicKey.findProgramAddressSync(
-			[provider.publicKey.toBuffer()],
-			program.programId
-		);
-		const tx = await program.methods
-			.initialize(data)
-			.accounts({
-				storageAccount: storageDataPDA,
-				systemProgram: systemProgram,
-			})
-			.signers([])
-			.rpc();
-		console.log('🚀 Intialization transaction:', tx);
+		try {
+			const data = new anchor.BN(100);
+			[storageDataPDA] = await anchor.web3.PublicKey.findProgramAddressSync(
+				[provider.publicKey.toBuffer()],
+				program.programId
+			);
+			const tx = await program.methods
+				.initialize(data)
+				.accounts({
+					storageAccount: storageDataPDA,
+					systemProgram: systemProgram,
+				})
+				.signers([])
+				.rpc();
+			console.log('🚀 Intialization transaction:', tx);
+		} catch (error) {
+			console.log('😀 Account has already been intialized');
+		}
 	});
 	it('Account data is initialized to 100', async () => {
 		// fetch data for pda
