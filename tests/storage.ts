@@ -30,7 +30,10 @@ describe('storage', async () => {
 				.rpc();
 			console.log('🚀 Intialization transaction:', tx);
 		} catch (error) {
-			console.log('😀 Account has already been intialized');
+			console.error(
+				'Check if pda is already in use after initializing account',
+				error.logs[3]
+			);
 		}
 	});
 	it('Account data is initialized to 100', async () => {
